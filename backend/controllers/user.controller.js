@@ -15,6 +15,12 @@ export const register = async (req, res) => {
             });
         };
         const file = req.file;
+        if (!file) {
+            return res.status(400).json({
+                message: 'No file uploaded',
+                success: false
+            });
+        }
         const fileUri = getDataUri(file);
         const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
@@ -81,7 +87,7 @@ export const login = async (req, res) => {
         const tokenData = {
             userId: user._id
         }
-        const token = await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
+        const token = await jwt.sign(tokenData, "NITIN", { expiresIn: '1d' });
 
         user = {
             _id: user._id,
@@ -116,7 +122,12 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         
         const file = req.file;
-        // cloudinary ayega idhar
+        if (!file) {
+            return res.status(400).json({
+                message: 'No file uploaded',
+                success: false
+            });
+        }
         const fileUri = getDataUri(file);
         const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 

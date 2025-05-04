@@ -12,6 +12,14 @@ export const postJob = async (req, res) => {
                 success: false
             })
         };
+
+        if (isNaN(salary) || Number(salary) <= 0) {
+            return res.status(400).json({
+                message: "Invalid salary value",
+                success: false
+            });
+        }
+
         const job = await Job.create({
             title,
             description,
